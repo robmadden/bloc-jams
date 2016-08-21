@@ -29,6 +29,7 @@ var albumMarconi = {
     ]
 };
 
+
 var createSongRow = function(songNumber, songName, songLength) {
     var template =
        '<tr class="album-view-song-item">'
@@ -40,6 +41,7 @@ var createSongRow = function(songNumber, songName, songLength) {
 
     return template;
 };
+
 
 var setCurrentAlbum = function(album) {
 
@@ -63,4 +65,5 @@ var setCurrentAlbum = function(album) {
 
 window.onload = function() {
     setCurrentAlbum(albumPicasso);
+
 };
