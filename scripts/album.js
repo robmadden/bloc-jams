@@ -56,7 +56,7 @@ var createSongRow = function(songNumber, songName, songLength) {
 
 
 var setCurrentAlbum = function(album) {
-
+    currentAlbum = album;
     var $albumTitle = $('.album-view-title');
     var $albumArtist = $('.album-view-artist');
     var $albumReleaseInfo = $('.album-view-release-info');
