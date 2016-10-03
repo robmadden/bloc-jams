@@ -108,6 +108,17 @@ var setCurrentAlbum = function(album) {
     }
 };
 
+var updateSeekPercentage = function($seekBar, seekBarFillRatio) {
+    var offsetXPercent = seekBarFillRatio * 100;
+
+    offsetXPercent = Math.max(0, offsetXPercent);
+    offsetXPercent = Math.min(100, offsetXPercent);
+
+    var percentageString = offsetXPercent + '%';
+    $seekBar.find('.fill').width(percentageString);
+    $seekBar.find('.thumb').css({left: percentageString});
+ };
+
 var trackIndex = function(album, song) {
     return album.songs.indexOf(song);
 };
@@ -182,35 +193,36 @@ var updatePlayerBarSong = function() {
     $('.main-controls .play-pause').html(playerBarPauseButton);
 };
 
+<<<<<<< Updated upstream
+
+
+
+=======
+
 var toggle = function() {
-    if (playerBarPauseButton !== null) {
-          getSongNumberCell(currentlyPlayingSongNumber).html(playButtonTemplate);
-          $('.main-controls .play-pause').html(playerBarPlayButton);
-          currentSoundFile.stop();
-    } else {
-      getSongNumberCell(currentlyPlayingSongNumber).html(pauseButtonTemplate);
-      $('.main-controls .play-pause').html(playerBarPauseButton);
-      currentSoundFile.play();
+
+   if (currentSoundFile.isPaused()) {
+//  If a song is paused and the play button is clicked in the player bar, it will:
+        getSongNumberCell(currentlyPlayingSongNumber).html(pauseButtonTemplate);
+// Change the song number cell from a play button to a pause button
+        $('.main-controls .play-pause').html(playerBarPauseButton);
+// Change the HTML of the player bar's play button to a pause button
+        currentSoundFile.play();
+// Play the song
+    } else if (currentSoundFile) {
+// If the song is playing (so a current sound file exist), and the pause button is clicked
+         getSongNumberCell(currentlyPlayingSongNumber).html(playButtonTemplate);
+// Change the song number cell from a pause button to a play button
+         $('.main-controls .play-pause').html(playerBarPlayButton);
+// Change the HTML of the player bar's pause button to a play button.
+         currentSoundFile.stop();
+// Pause the song
+>>>>>>> Stashed changes
     }
 
-}
-
-var clickHandler = function(targetElement) {
-    var songItem = getSongItem(targetElement);
-
-    if (currentlyPlayingSong === null) {
-        songItem.innerHTML = pauseButtonTemplate;
-        currentlyPlayingSong = songItem.getAttribute('data-song-number');
-    } else if (currentlyPlayingSong === songItem.getAttribute('data-song-number')) {
-        songItem.innerHTML = playButtonTemplate;
-        currentlyPlayingSong = null;
-    } else if (currentlyPlayingSong !== songItem.getAttribute('data-song-number')) {
-        var currentlyPlayingSongElement = document.querySelector('[data-song-number="' + currentlyPlayingSong + '"]');
-        currentlyPlayingSongElement.innerHTML = currentlyPlayingSongElement.getAttribute('data-song-number');
-        songItem.innerHTML = pauseButtonTemplate;
-        currentlyPlayingSong = songItem.getAttribute('data-song-number');
-    }
 };
+
+
 
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
 var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
