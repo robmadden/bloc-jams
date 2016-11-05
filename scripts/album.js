@@ -261,15 +261,20 @@ var updatePlayerBarSong = function() {
     $('.main-controls .play-pause').html(playerBarPauseButton);
 };
 
-function setCurrentTimeInPlayerBar($currentTime) {
-	if (currentSoundFile) {
-		var $currentTime = currentSoundFile.getTime();
-		$currentTime = $('current-time').text(element);
-
-	}
+function setCurrentTimeInPlayerBar(currentTime) {
+  $('.current-time').text(getTime());
 }
 
-console.log($currentTime);
+function setTotalTimeInPlayerBar(totalTime) {
+  $('.total-time').text(getDuration());
+}
+
+function filterTimeCode(timeInSeconds) {
+  var minutes = Math.floor(getDuration() / 60));
+  var seconds = Math.floor(getDuration()/ 3600);
+  parseFloat(getDuration() / 60);
+  return minutes + ':' + seconds;
+}
 
 var toggle = function() {
 
