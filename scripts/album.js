@@ -51,10 +51,12 @@ var createSongRow = function(songNumber, songName, songLength) {
                 $(this).html(pauseButtonTemplate);
                 $('.main-controls .play-pause').html(playerBarPauseButton);
                 currentSoundFile.play();
+
             } else {
                 $(this).html(playButtonTemplate);
                 $('.main-controls .play-pause').html(playerBarPlayButton);
                 currentSoundFile.pause();
+
             }
         }
     };
@@ -105,6 +107,17 @@ var setCurrentAlbum = function(album) {
         $albumSongList.append($newRow)
     }
 };
+
+var updateSeekPercentage = function($seekBar, seekBarFillRatio) {
+    var offsetXPercent = seekBarFillRatio * 100;
+
+    offsetXPercent = Math.max(0, offsetXPercent);
+    offsetXPercent = Math.min(100, offsetXPercent);
+
+    var percentageString = offsetXPercent + '%';
+    $seekBar.find('.fill').width(percentageString);
+    $seekBar.find('.thumb').css({left: percentageString});
+ };
 
 var trackIndex = function(album, song) {
     return album.songs.indexOf(song);
@@ -182,6 +195,41 @@ var updatePlayerBarSong = function() {
 
 
 
+var toggle = function() {
+
+   if (currentSoundFile == null) { // eat shit
+     // This is the "default state", play song number 1 unless there's a "last song"
+     setSong(1);  
+     getSongNumberCell(currentlyPlayingSongNumber).html(pauseButtonTemplate);
+     $('.main-controls .play-pause').html(playerBarPauseButton);
+     currentSoundFile.play();
+     return;
+   }
+
+   else if (currentSoundFile.isPaused()) {
+//  If a song is paused and the play button is clicked in the player bar, it will:
+        getSongNumberCell(currentlyPlayingSongNumber).html(pauseButtonTemplate);
+// Change the song number cell from a play button to a pause button
+        $('.main-controls .play-pause').html(playerBarPauseButton);
+// Change the HTML of the player bar's play button to a pause button
+        currentSoundFile.play();
+// Play the song
+
+    } else if (currentSoundFile) {
+// If the song is playing (so a current sound file exist), and the pause button is clicked
+         getSongNumberCell(currentlyPlayingSongNumber).html(playButtonTemplate);
+// Change the song number cell from a pause button to a play button
+         $('.main-controls .play-pause').html(playerBarPlayButton);
+// Change the HTML of the player bar's pause button to a play button.
+         currentSoundFile.stop();
+// Pause the song
+
+    }
+
+};
+
+
+
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
 var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
 var playerBarPlayButton = '<span class="ion-play"></span>';
@@ -195,10 +243,12 @@ var currentVolume = 80;
 
 var $previousButton = $('.main-controls .previous');
 var $nextButton = $('.main-controls .next');
+var $playpauseButton = $('.main-controls .play-pause');
 
 $(document).ready(function() {
     setCurrentAlbum(albumPicasso);
     $previousButton.click(previousSong);
     $nextButton.click(nextSong);
+    $playpauseButton.click(toggle);
 
 });
